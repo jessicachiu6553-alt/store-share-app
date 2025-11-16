@@ -43,7 +43,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: '80px'
+    marginTop: '80px',
+    // backgroundColor: 'red',
   },
   form: {
     display: 'flex',

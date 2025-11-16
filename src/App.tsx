@@ -25,7 +25,7 @@ const App = () => {
   return (
     <>
       <NavTopbar />
-      <div style={{ display: "flex", height: "100vh" }}>
+      <div style={{ display: "flex" }}>
         <NavPane />
         <div style={{ flex: 1, height: '100%' }}>
           <Routes>
