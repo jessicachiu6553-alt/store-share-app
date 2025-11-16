@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/useAuthStore'
 
-const Navbar = () => {
+const NavTopbar = () => {
   const { isAuthenticated, user, logout } = useAuthStore()
   const navigate = useNavigate()
 
@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
     <nav style={styles.nav}>
-      <h3>Zustand TS Demo</h3>
+      <h3>Zustand TS Demo, isAuthenticated: {isAuthenticated ? "Yes": "No"}</h3>
       <div style={styles.links}>
         {isAuthenticated ? (
           <>
@@ -20,7 +20,7 @@ const Navbar = () => {
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
-          <Link to="/login">Login</Link>
+          <Link to="/login" color='#ffffff'>Login</Link>
         )}
       </div>
     </nav>
@@ -40,7 +40,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: '15px'
-  }
+  },
+
 }
 
-export default Navbar
+export default NavTopbar

@@ -1,42 +1,48 @@
-import { useEffect, type JSX } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuthStore } from './store/useAuthStore'
-import Navbar from './components/Navbar'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
+import { useEffect, type JSX } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuthStore } from "./store/useAuthStore";
+import NavTopbar from "./components/NavTopBar";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import NavPane from "./components/NavPane";
 
 interface ProtectedRouteProps {
-  children: JSX.Element
+  children: JSX.Element;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
-  return isAuthenticated ? children : <Navigate to="/login" />
-}
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
 
 const App = () => {
-  const initializeAuth = useAuthStore((state) => state.initializeAuth)
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
   useEffect(() => {
-    initializeAuth()
-  }, [initializeAuth])
+    initializeAuth();
+  }, [initializeAuth]);
 
   return (
     <>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
+      <NavTopbar />
+      <div style={{ display: "flex", height: "100vh" }}>
+        <NavPane />
+        <div style={{ flex: 1, height: '100%' }}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
