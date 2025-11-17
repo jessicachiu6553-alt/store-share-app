@@ -5,6 +5,7 @@ import NavTopbar from "./components/NavTopBar";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NavPane from "./components/NavPane";
+import useWindowDimensions from "./store/useWindowDirection";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -17,6 +18,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
 const App = () => {
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
+  const { winHeight, winWidth } = useWindowDimensions();
 
   useEffect(() => {
     initializeAuth();
@@ -24,21 +26,16 @@ const App = () => {
 
   return (
     <>
-      <NavTopbar />
-      <div style={{ display: "flex" }}>
-        <NavPane />
-        <div style={{ flex: 1, height: '100%' }}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <HomePage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/login" element={<LoginPage />} />
-          </Routes>
+      <div style={{ minHeight: winHeight, fontFamily: "Arial" }}>
+        <NavTopbar />
+        <div style={{ display: "flex", minHeight: winHeight - 80 }}>
+          <NavPane />
+          <div style={{ flex: 1, height: "100%" }}>
+            <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+            </Routes>
+          </div>
         </div>
       </div>
     </>

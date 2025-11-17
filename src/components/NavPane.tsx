@@ -1,74 +1,209 @@
-import { type JSX } from 'react';
-import { useAuthStore } from '../store/useAuthStore';
-
-
+import { type JSX } from "react";
+import { useAuthStore } from "../store/useAuthStore";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FaUserTie } from "react-icons/fa6";
 
 const NavPane = (): JSX.Element => {
-    const user = useAuthStore((state) => state.user);
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isActive = (path: string) => location.pathname === path;
 
-    return (
-      <div style={styles.pane}>
+  return (
+    <div style={styles.pane}>
+      <div style={styles.paneWrap}>
         <div style={styles.title}>Navigation Left Pane</div>
-        <div style={styles.paneWrap}>
-            {/* TOP PART */}
-          <div style={{}}> 
-            {/* {user && ( */}
-            <div style={styles.item}>
-              Welcome, {user && user.username ? user?.username : "No login"}!
-            </div>
-            {/* )} */}
-            <div style={styles.item}>This should be next item</div>
-            <div style={styles.item}>This should be next item</div>
-            <div style={styles.item}>This should be next item</div>
-            <div style={styles.item}>This should be next item</div>
-            <div style={styles.item}>This should be next item</div>
-            <div style={styles.item}>This should be next item</div>
-          </div>
-            {/* TOP PART */}
 
-          <div style={{}}>
-            <div style={styles.item}>This should be the password part</div>
-        </div>
-        
+        <div style={styles.sectionWrap}>
+          {/* UPPER PART */}
+          <div style={styles.upperSectionWrap}>
+            <div style={styles.item}>
+              Welcome
+              {user && user.username
+                ? ", " + user?.username
+                : "! Please login!"}
+            </div>
+            {/* <div>location: {location.pathname}</div> */}
+            {/* <div>username: {user ? user.username: "No user"}</div>
+          <div>userId: {user ? user.userId: "No user"}</div>
+          <div>useremail: {user ? user.email: "No user"}</div> */}
+
+            <div
+              style={isActive("/home") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/home")}
+            >
+              Home
+            </div>
+
+            <div
+              style={isActive("/dashboard") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </div>
+
+            <div
+              style={isActive("/files") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/files")}
+            >
+              All Files
+            </div>
+
+            <div
+              style={isActive("/shared") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/shared")}
+            >
+              Shared with me
+            </div>
+
+            <div
+              style={isActive("/starred") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/starred")}
+            >
+              Starred
+            </div>
+
+            <div
+              style={isActive("/trash") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/trash")}
+            >
+              Trash
+            </div>
+          </div>
+          {/* UPPER PART */}
+
+          {/* BOTTOM PART */}
+          <div style={styles.bottomSectionWrap}>
+            <div
+              style={isActive("/settings") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/settings")}
+            >
+              Settings
+            </div>
+            {user && isAuthenticated ? (
+              <>
+                <div style={styles.item} onClick={() => navigate("/logout")}>
+                  Logout
+                </div>
+
+                <div style={styles.userCardWrap}>
+                    <div style={styles.userIconWrap}>
+                        <FaUserTie size={40} color="#324054" />
+                        {/* <img src={logo} alt="logo" style={{height:"50px"}} /> */}
+                    </div>
+                    <div style={styles.userCardRightWrap}>
+                        <div style={styles.userName}>{user.username}</div>
+                        <div style={styles.userEmail}>{user.email}</div>
+                    </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div
+                  style={isActive("/login") ? styles.itemSelected : styles.item}
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </div>
+
+                <div style={styles.item}>Please login!!</div>
+              </>
+            )}
+          </div>
+
+          {/* BOTTOM PART */}
         </div>
       </div>
-    );
-}
-
-
-
-
-const styles: Record<string, React.CSSProperties> = {
-    pane: {
-        width: '250px',
-        padding: '16px',
-        backgroundColor: '#f5f5f5',
-        borderRight: '1px solid #ddd',
-        alignItems: 'stretch',
-        minHeight:'80vh',
-        // overflowY: 'auto',
-    },
-    title: {
-        fontSize: '18px',
-        fontWeight: 'bold',
-        marginBottom: '16px',
-    },
-    paneWrap: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent:'space-between',
-        height:'100%'
-    },
-
-    item: {
-        padding: '8px 12px',
-        marginBottom: '8px',
-        backgroundColor: '#fff',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
-        cursor: 'pointer',
-    },
+    </div>
+  );
 };
 
+const styles: Record<string, React.CSSProperties> = {
+  pane: {
+    width: "250px",
+    padding: "16px",
+    backgroundColor: "#E5E5EA",
+    borderRight: "1px solid #ddd",
+    alignItems: "stretch",
+    minHeight: "100%",
+    overflowY: "auto",
+  },
+  title: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    padding: "12px 16px",
+    // backgroundColor: "blue",
+  },
+
+  paneWrap: {
+    display: "flex",
+    flexDirection: "column",
+    // backgroundColor: "red",
+    height: "100%",
+  },
+  sectionWrap: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    height: "100%",
+  },
+  upperSectionWrap: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+  item: {
+    padding: "12px",
+    cursor: "pointer",
+    color: "#324054",
+    fontSize: "16px",
+    fontWeight: "medium",
+  },
+  itemSelected: {
+    padding: "12px",
+    backgroundColor: "#EFF6FF",
+    color: "#2D68FE",
+    fontSize: "16px",
+    fontWeight: "medium",
+  },
+
+  bottomSectionWrap: {
+    display: "flex",
+    flexDirection: "column",
+  },
+
+  userCardWrap: {
+    display: "flex",
+    gap: "8px",
+    padding: "12px",
+  },
+  userIconWrap: {
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+    overflow: "hidden",
+  },
+  userCardRightWrap: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: "4px",
+  },
+  userName: {
+    fontSize: "12px",
+    color: "#324054",
+    fontWeight: "regular",
+  },
+  userEmail: {
+    fontSize: "12px",
+    color: "#71839B",
+    fontWeight: "medium",
+  },
+};
 
 export default NavPane;

@@ -1,11 +1,16 @@
 import { create } from 'zustand'
 
 interface User {
-  username: string
+  username: string;
+  email: string;
+  userId: string;
 }
 
 interface AuthState {
-  user: User | null
+  user: User | null;
+  username: string | null;
+  email: string | null;
+  userId: string | null;
   isAuthenticated: boolean
   login: (username: string, password: string) => void
   logout: () => void
@@ -14,13 +19,16 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
+  username: null,
+  email: null,
+  userId: null,
   isAuthenticated: false,
 
   login: (username: string, password: string) => {
     // Demo: Accept any non-empty username/password
     if (username && password) {
-      const user = { username }
-      set({ user, isAuthenticated: true })
+      const user: User = { username: username, email: `${username}@gmail.com`, userId: `uid-  ${Math.random().toString(12)}` }
+      set({ user:user, isAuthenticated: true })
       localStorage.setItem('authUser', JSON.stringify(user))
     }
   },
