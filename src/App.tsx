@@ -4,6 +4,7 @@ import { useAuthStore } from "./store/useAuthStore";
 import NavTopbar from "./components/NavTopBar";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import Dashboard from "./pages/Dashboard";
 import NavPane from "./components/NavPane";
 import useWindowDimensions from "./store/useWindowDirection";
 
@@ -34,6 +35,7 @@ const App = () => {
           <div style={{ flex: 1, height: winHeight }}>
             <Routes>
               <Route path="/home" element={<HomePage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/login" element={<LoginPage />} />
             </Routes>
           </div>
