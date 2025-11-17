@@ -26,11 +26,12 @@ const App = () => {
 
   return (
     <>
-      <div style={{ minHeight: winHeight, fontFamily: "Arial" }}>
-        <NavTopbar />
-        <div style={{ display: "flex", minHeight: winHeight - 80 }}>
+      <div style={{ minHeight: winHeight, fontFamily: "Arial"}}>
+        {/* <NavTopbar /> */}
+        {/* <div style={{ display: "flex", minHeight: winHeight - 80}}> */}
+        <div style={{ display: "flex", minHeight: winHeight }}>
           <NavPane />
-          <div style={{ flex: 1, height: "100%" }}>
+          <div style={{ flex: 1, height: winHeight }}>
             <Routes>
               <Route path="/home" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />

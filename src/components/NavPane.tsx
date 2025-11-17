@@ -2,28 +2,51 @@ import { type JSX } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaUserTie } from "react-icons/fa6";
+import { GiDuck } from "react-icons/gi";
 
 const NavPane = (): JSX.Element => {
-  const user = useAuthStore((state) => state.user);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isAuthenticated, user, logout } = useAuthStore()
   const location = useLocation();
   const navigate = useNavigate();
   const isActive = (path: string) => location.pathname === path;
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   return (
     <div style={styles.pane}>
       <div style={styles.paneWrap}>
-        <div style={styles.title}>Navigation Left Pane</div>
+        <div style={styles.title}>
+          <div
+            style={{
+              backgroundColor: "black",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              width: "32px",
+              height: "32px",
+              borderRadius: "4px",
+            }}
+          >
+            <GiDuck
+              size={28}
+              color="yellow"
+              style={{ transform: "scaleX(-1)" }}
+            />
+          </div>
+          <div>Store-Share-App</div>
+        </div>
 
         <div style={styles.sectionWrap}>
           {/* UPPER PART */}
           <div style={styles.upperSectionWrap}>
-            <div style={styles.item}>
+            {/* <div style={styles.item}>
               Welcome
               {user && user.username
                 ? ", " + user?.username
                 : "! Please login!"}
-            </div>
+            </div> */}
             {/* <div>location: {location.pathname}</div> */}
             {/* <div>username: {user ? user.username: "No user"}</div>
           <div>userId: {user ? user.userId: "No user"}</div>
@@ -44,8 +67,8 @@ const NavPane = (): JSX.Element => {
             </div>
 
             <div
-              style={isActive("/files") ? styles.itemSelected : styles.item}
-              onClick={() => navigate("/files")}
+              style={isActive("/allFiles") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/allFiles")}
             >
               All Files
             </div>
@@ -83,19 +106,19 @@ const NavPane = (): JSX.Element => {
             </div>
             {user && isAuthenticated ? (
               <>
-                <div style={styles.item} onClick={() => navigate("/logout")}>
+                <div onClick={handleLogout} style={styles.item}>
                   Logout
                 </div>
 
                 <div style={styles.userCardWrap}>
-                    <div style={styles.userIconWrap}>
-                        <FaUserTie size={40} color="#324054" />
-                        {/* <img src={logo} alt="logo" style={{height:"50px"}} /> */}
-                    </div>
-                    <div style={styles.userCardRightWrap}>
-                        <div style={styles.userName}>{user.username}</div>
-                        <div style={styles.userEmail}>{user.email}</div>
-                    </div>
+                  <div style={styles.userIconWrap}>
+                    <FaUserTie size={40} color="#324054" />
+                    {/* <img src={logo} alt="logo" style={{height:"50px"}} /> */}
+                  </div>
+                  <div style={styles.userCardRightWrap}>
+                    <div style={styles.userName}>{user.username}</div>
+                    <div style={styles.userEmail}>{user.email}</div>
+                  </div>
                 </div>
               </>
             ) : (
@@ -132,7 +155,10 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: "18px",
     fontWeight: "bold",
-    padding: "12px 16px",
+    padding: "12px 8px",
+    display: "flex",
+    gap: "12px",
+    alignItems: "center",
     // backgroundColor: "blue",
   },
 
