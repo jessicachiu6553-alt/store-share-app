@@ -1,3 +1,4 @@
+import CustomerTable from '../components/List/CustomerList';
 import { useAuthStore } from '../store/useAuthStore'
 
 const AllFiles = () => {
@@ -8,6 +9,7 @@ const AllFiles = () => {
   return (
     <div style={{ textAlign: 'center', marginTop: '80px' }}>
       <p>This is your AllFiles page.</p>
+      <CustomerTable />
     </div>
   )
 }
