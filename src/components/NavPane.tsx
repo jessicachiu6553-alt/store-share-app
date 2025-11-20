@@ -53,8 +53,8 @@ const NavPane = (): JSX.Element => {
           <div>useremail: {user ? user.email: "No user"}</div> */}
 
             <div
-              style={isActive("/home") ? styles.itemSelected : styles.item}
-              onClick={() => navigate("/home")}
+              style={isActive("/") ? styles.itemSelected : styles.item}
+              onClick={() => navigate("/")}
             >
               Home
             </div>
