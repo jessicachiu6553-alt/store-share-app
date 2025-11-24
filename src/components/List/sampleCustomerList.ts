@@ -8,6 +8,16 @@ export interface Customer {
   status: "Active" | "Inactive";
 }
 
+export const sampleCustomersDataKeyList:string[] = [
+  "id",
+  "name",
+  'company',
+  'phone',
+  'email',
+  'country',
+  'status'
+];
+
 export const sampleCustomersData: Customer[] = [
   {
     id: 1,

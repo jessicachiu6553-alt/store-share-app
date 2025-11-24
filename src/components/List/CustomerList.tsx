@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import { Search, ChevronDown } from "lucide-react";
 // import { customersData } from "../data/customers";
-import {Customer, sampleCustomersData} from "./sampleCustomerList";
+import {Customer, sampleCustomersData, sampleCustomersDataKeyList} from "./sampleCustomerList";
 
 
 export default function CustomerTable() {
@@ -174,6 +174,7 @@ export default function CustomerTable() {
       display: "flex",
       justifyContent: "center",
       alignItems: "flex-start",
+      // backgroundColor: 'red'
     },
     container: {
       position: "relative",
@@ -183,8 +184,7 @@ export default function CustomerTable() {
       backgroundColor: "white",
       borderRadius: "25px",
       boxShadow: "0 10px 60px rgba(226, 236, 249, 0.5)",
-    //   padding: isMobile ? "20px 15px" : "30px 38px",
-      padding: "30px, 38px",
+      padding:"10px 50px",
       marginBottom: "40px",
     },
     headerContainer: {
