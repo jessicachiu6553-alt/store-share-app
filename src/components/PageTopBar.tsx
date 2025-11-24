@@ -20,7 +20,6 @@ const PageTopBar = () => {
   return (
     <nav style={styles.nav}>
       <div style={styles.pageHeaderText}>
-        {/* Zustand TS Demo, isAuthenticated: {isAuthenticated ? "Yes" : "No"} */}
         Dashboard
       </div>
       <div style={styles.links}>
@@ -33,13 +32,18 @@ const PageTopBar = () => {
               onClick={() => {
                 console.log("onPress Upload");
               }}
-              variant="primary"
+              btnColor= "btnBlue"
             />
-            <button onClick={handleLogout}>Logout</button>
+            <Buttons
+              label="Logout"
+              onClick={handleLogout}
+              btnColor= "btnRed"
+            />
+
           </>
         ) : (
           <>
-            <Buttons label="login" onClick={handleLogin} />
+            <Buttons label="LogIn" onClick={handleLogin} btnColor="btnCyan"/>
           </>
         )}
       </div>
@@ -53,13 +57,12 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "center",
     height: "95px",
-    background: "yellow",
     padding: "0px 20px",
   },
   pageHeaderText: {
     fontFamily: "Arial, sans-serif",
     fontSize: "58px",
-    fontWeight: "600", //semi-bold
+    fontWeight: "550", //semi-bold
   },
   links: {
     display: "flex",

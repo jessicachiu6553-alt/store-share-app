@@ -1,48 +1,70 @@
 import { type JSX } from "react";
 
+type BtnColor = "btnBlue" | "btnRed" | "btnGreen" | "btnMint" | "btnCyan";
+
 interface ButtonProps {
   label: string;
   onClick: () => void;
-  variant?: "primary" | "secondary";
+  btnColor?: BtnColor;
   disabled?: boolean;
 }
-
 
 const Buttons: React.FC<ButtonProps> = ({
   label = "",
   onClick = () => {},
-  variant = "primary",
+  btnColor = "btnBlue",
   disabled = false,
 }) => {
-  const stylesInner: Record<string, React.CSSProperties> = {
-    primary: {
-      backgroundColor: "#007bff",
-      cursor: disabled ? "not-allowed" : "pointer",
-      opacity: disabled ? 0.5 : 1,
-    },
-    secondary: {
-      padding: "10px 16px",
-      backgroundColor: "#6c757d",
-      cursor: disabled ? "not-allowed" : "pointer",
-      opacity: disabled ? 0.5 : 1,
-    },
-  };
-
   return (
-    <button style={{...styles.button, ...stylesInner[variant]}} onClick={onClick} disabled={disabled}>
-      {label}
+    <button
+      style={{
+        ...styles.button,
+        backgroundColor: getButtonColorValue(btnColor),
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.5 : 1,
+      }}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      <span style={styles.btnLabel}>{label}</span>
     </button>
   );
 };
 
 const styles: Record<string, React.CSSProperties> = {
   button: {
-    padding: "10px 16px",
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "#fff",
+    // padding: "10px",
+    height: "35px",
+    width: "150px",
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "30px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnLabel: {
+    fontFamily: "Arial",
+    fontSize: "18px",
+    fontWeight: "550", //semi-bold
+    color: "#fff",
   },
 };
+
+const getButtonColorValue = (color?: BtnColor): string => {
+  switch (color) {
+    case "btnRed":
+      return "#FF383C";
+    case "btnGreen":
+      return "#34C759";
+    case "btnMint":
+      return "#00C8B3";
+    case "btnCyan":
+      return "#00C0E8";
+    case "btnBlue":
+      return "#2D68FE";
+    default:
+      return "#2D68FE";
+  }
+};
+
 export default Buttons;
