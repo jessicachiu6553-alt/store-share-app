@@ -2,7 +2,7 @@
 
 import { useAuthStore } from "../../store/useAuthStore";
 
-const AdminHomePage = () => {
+const AdminNotificationsPage = () => {
   const user = useAuthStore((state) => state.user)
   const isAdminLoggedIn = useAuthStore((state) => state.isAdminLoggedIn);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -12,9 +12,9 @@ const AdminHomePage = () => {
     <div style={{ textAlign: 'center', marginTop: '80px' }}>
       <h2>Welcome, {user && isAuthenticated ?  user?.username: "Please Login!!"} 👋</h2>
       <h2>Is it admin Logged In? : {isAdminLoggedIn? "true": "false"}</h2>
-      <p>This is your ADMIN HOME PAGE.</p>
+      <p>This is your ADMIN NOTIFICATIONS PAGE.</p>
     </div>
   )
 }
 
-export default AdminHomePage
+export default AdminNotificationsPage

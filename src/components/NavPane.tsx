@@ -145,7 +145,7 @@ const NavPane = (): JSX.Element => {
                   </div>
                   <div
                     style={styles.item}
-                    onClick={() => navigate("/admin")}
+                    onClick={() => navigate("/admin/adminLogin")}
                   >
                     Admin Login
                   </div>

@@ -47,7 +47,7 @@ const AdminNavPane = (): JSX.Element => {
               {/* <div>location: {location.pathname}</div> */}
               <div
                 style={
-                  isActive("admin/adminHome")
+                  isActive("/admin/adminHome")
                     ? styles.itemSelected
                     : styles.item
                 }
@@ -57,22 +57,22 @@ const AdminNavPane = (): JSX.Element => {
               </div>
               <div
                 style={
-                  isActive("admin/userManagement")
+                  isActive("/admin/adminUserManagement")
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/admin/userManagement")}
+                onClick={() => navigate("/admin/adminUserManagement")}
               >
                 User Management
               </div>
 
               <div
                 style={
-                  isActive("/admin/analytics")
+                  isActive("/admin/adminAnalytics")
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/admin/analytics")}
+                onClick={() => navigate("/admin/adminAnalytics")}
               >
                 Analytics
               </div>
@@ -83,21 +83,21 @@ const AdminNavPane = (): JSX.Element => {
             <div style={styles.bottomSectionWrap}>
               <div
                 style={
-                  isActive("/admin/notification")
+                  isActive("/admin/adminNotification")
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/admin/notification")}
+                onClick={() => navigate("/admin/adminNotification")}
               >
-                Notification
+                Admin Notification
               </div>
               <div
                 style={
-                  isActive("/admin/settings")
+                  isActive("/admin/adminSettings")
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/admin/settings")}
+                onClick={() => navigate("/admin/adminSettings")}
               >
                 Admin Settings
               </div>
@@ -126,14 +126,7 @@ const AdminNavPane = (): JSX.Element => {
                   >
                     Admin Login
                   </div>
-                  <div
-                    style={
-                      isActive("/") || isActive("/home")
-                        ? styles.itemSelected
-                        : styles.item
-                    }
-                    onClick={() => navigate("/home")}
-                  >
+                  <div style={styles.item} onClick={() => navigate("/home")}>
                     Back to User Portal
                   </div>
                 </>

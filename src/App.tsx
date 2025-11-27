@@ -15,6 +15,10 @@ import Settings from "./pages/Settings";
 import AdminLoginPage from "./Admin/pages/AdminLoginPages";
 import AdminNavPane from "./Admin/components/adminNavPane";
 import AdminHomePage from "./Admin/pages/AdminHomePage";
+import AdminUserManagementPage from "./Admin/pages/AdminUserManagementPage";
+import AdminAnalyticsPage from "./Admin/pages/AdminAnalyticsPage";
+import AdminNotificationsPage from "./Admin/pages/AdminNotificationsPage";
+import AdminSettingsPage from "./Admin/pages/AdminSettingsPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -55,10 +59,10 @@ const App = () => {
               <Route path="/admin" element={<AdminNavPane />}>
                 <Route path="/admin" element={<Navigate to="/admin/adminHome" />} />
                 <Route path="/admin/adminHome" element={<AdminHomePage />} />
-                <Route path="/admin/userManagement" element={<AdminHomePage />} />
-                <Route path="/admin/analytics" element={<AdminHomePage />} />
-                <Route path="/admin/notification" element={<AdminHomePage />} />
-                <Route path="/admin/settings" element={<AdminHomePage />} />
+                <Route path="/admin/adminUserManagement" element={<AdminUserManagementPage />} />
+                <Route path="/admin/adminAnalytics" element={<AdminAnalyticsPage />} />
+                <Route path="/admin/adminNotification" element={<AdminNotificationsPage />} />
+                <Route path="/admin/adminSettings" element={<AdminSettingsPage />} />
                 <Route path="/admin/adminLogin" element={<AdminLoginPage />} />
               </Route>
             </Routes>
