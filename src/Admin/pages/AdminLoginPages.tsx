@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/useAuthStore'
 
 const AdminLoginPage = () => {
-  const [username, setUsername] = useState('JohnDoe')
+  const [username, setUsername] = useState('Admin admin')
   const [password, setPassword] = useState('Password123213123424234!')
   const navigate = useNavigate()
-  const login = useAuthStore((state) => state.login)
+  const adminLogin = useAuthStore((state) => state.adminLogin)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    login(username, password)
-    navigate('/home')
+    adminLogin(username, password)
+    navigate('/admin/adminHome')
   }
 
   return (
@@ -32,7 +32,7 @@ const AdminLoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Admin Login</button>
       </form>
     </div>
   )

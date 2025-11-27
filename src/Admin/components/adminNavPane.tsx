@@ -1,18 +1,17 @@
 import { type JSX } from "react";
-import { useAuthStore } from "../store/useAuthStore";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaUserTie } from "react-icons/fa6";
 import { GiDuck } from "react-icons/gi";
-import useWindowDimensions from "../store/useWindowDirection";
+import { useAuthStore } from "../../store/useAuthStore";
 
-const NavPane = (): JSX.Element => {
-  const { isAuthenticated, user, logout } = useAuthStore()
+const AdminNavPane = (): JSX.Element => {
+  const { isAuthenticated, user, logout, adminLogout } = useAuthStore()
   const location = useLocation();
   const navigate = useNavigate();
   const isActive = (path: string) => location.pathname === path;
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
+  const handleAdminLogout = () => {
+    adminLogout()
+    navigate('/admin/adminLogin')
   }
 
   return (
@@ -20,6 +19,7 @@ const NavPane = (): JSX.Element => {
       <div style={styles.pane}>
         <div style={styles.paneWrap}>
           <div style={styles.title}>
+            {/* WebApp logo */}
             <div
               style={{
                 backgroundColor: "black",
@@ -37,7 +37,8 @@ const NavPane = (): JSX.Element => {
                 style={{ transform: "scaleX(-1)" }}
               />
             </div>
-            <div>Store-Share-App</div>
+            {/* WebApp logo */}
+            <div>Storesite - Admin Portal</div>
           </div>
 
           <div style={styles.sectionWrap}>
@@ -56,58 +57,50 @@ const NavPane = (): JSX.Element => {
 
               <div
                 style={
-                  isActive("/") || isActive("/home")
+                  isActive("admin/adminHome")
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/admin/adminHome")}
               >
-                Home
+                Admin Home Page
+              </div>
+              <div
+                style={
+                  isActive("admin/userManagement")
+                    ? styles.itemSelected
+                    : styles.item
+                }
+                onClick={() => navigate("/admin/userManagement")}
+              >
+                User Management
               </div>
 
               <div
                 style={
-                  isActive("/dashboard") ? styles.itemSelected : styles.item
+                  isActive("/admin/Analytics")
+                    ? styles.itemSelected
+                    : styles.item
                 }
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/admin/Analytics")}
               >
-                Dashboard
-              </div>
-
-              <div
-                style={
-                  isActive("/allFiles") ? styles.itemSelected : styles.item
-                }
-                onClick={() => navigate("/allFiles")}
-              >
-                All Files
-              </div>
-
-              <div
-                style={isActive("/shared") ? styles.itemSelected : styles.item}
-                onClick={() => navigate("/shared")}
-              >
-                Shared with me
-              </div>
-
-              <div
-                style={isActive("/starred") ? styles.itemSelected : styles.item}
-                onClick={() => navigate("/starred")}
-              >
-                Starred
-              </div>
-
-              <div
-                style={isActive("/trash") ? styles.itemSelected : styles.item}
-                onClick={() => navigate("/trash")}
-              >
-                Trash
+                Analytics
               </div>
             </div>
             {/* UPPER PART */}
 
             {/* BOTTOM PART */}
             <div style={styles.bottomSectionWrap}>
+              <div
+                style={
+                  isActive("/admin/notification")
+                    ? styles.itemSelected
+                    : styles.item
+                }
+                onClick={() => navigate("/settings")}
+              >
+                Notification
+              </div>
               <div
                 style={
                   isActive("/settings") ? styles.itemSelected : styles.item
@@ -118,16 +111,13 @@ const NavPane = (): JSX.Element => {
               </div>
               {user && isAuthenticated ? (
                 <>
-                  <div onClick={handleLogout} style={styles.item}>
-                    Logout
+                  <div onClick={handleAdminLogout} style={styles.item}>
+                    Admin Logout
                   </div>
 
                   <div style={styles.userCardWrap}>
-                    <div style={styles.userIconWrap}>
-                      <FaUserTie size={40} color="#324054" />
-                      {/* <img src={logo} alt="logo" style={{height:"50px"}} /> */}
-                    </div>
                     <div style={styles.userCardRightWrap}>
+                      <div>Hello Admin!!</div>
                       <div style={styles.userName}>{user.username}</div>
                       <div style={styles.userEmail}>{user.email}</div>
                     </div>
@@ -137,19 +127,24 @@ const NavPane = (): JSX.Element => {
                 <>
                   <div
                     style={
-                      isActive("/login") ? styles.itemSelected : styles.item
+                      isActive("/admin/adminLogin")
+                        ? styles.itemSelected
+                        : styles.item
                     }
-                    onClick={() => navigate("/login")}
-                  >
-                    Login
-                  </div>
-                  <div
-                    style={styles.item}
-                    onClick={() => navigate("/admin")}
+                    onClick={() => navigate("/admin/adminLogin")}
                   >
                     Admin Login
                   </div>
-                  <div style={styles.item}>Please login!!</div>
+                  <div
+                    style={
+                      isActive("/") || isActive("/home")
+                        ? styles.itemSelected
+                        : styles.item
+                    }
+                    onClick={() => navigate("/home")}
+                  >
+                    Back to User Portal
+                  </div>
                 </>
               )}
             </div>
@@ -260,4 +255,4 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-export default NavPane;
+export default AdminNavPane;

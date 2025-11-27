@@ -12,8 +12,11 @@ interface AuthState {
   email: string | null;
   userId: string | null;
   isAuthenticated: boolean
+  isAdminLoggedIn?: boolean
   login: (username: string, password: string) => void
   logout: () => void
+  adminLogin: (username: string, password: string) => void
+  adminLogout: () => void
   initializeAuth: () => void
 }
 
@@ -23,6 +26,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   email: null,
   userId: null,
   isAuthenticated: false,
+  isAdminLoggedIn: false,
 
   login: (username: string, password: string) => {
     // Demo: Accept any non-empty username/password
@@ -42,10 +46,15 @@ export const useAuthStore = create<AuthState>((set) => ({
         // Demo: Accept any non-empty username/password
     if (username && password) {
       const user: User = { username: username, email: `${username}@gmail.com`, userId: `uid-  ${Math.random().toString(12)}` }
-      set({ user:user, isAuthenticated: true })
+      set({ user:user, isAuthenticated: true , isAdminLoggedIn:true})
       localStorage.setItem('authUser', JSON.stringify(user))
     }
   },
+
+    adminLogout: () => {
+      set({ user: null, isAuthenticated: false , isAdminLoggedIn:false})
+      localStorage.removeItem('authUser')
+    },
 
 
   initializeAuth: () => {

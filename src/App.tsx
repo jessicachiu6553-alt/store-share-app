@@ -13,6 +13,8 @@ import Starred from "./pages/Starred";
 import Trash from "./pages/Trash";
 import Settings from "./pages/Settings";
 import AdminLoginPage from "./Admin/pages/AdminLoginPages";
+import AdminNavPane from "./Admin/components/adminNavPane";
+import AdminHomePage from "./Admin/pages/AdminHomePage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -50,8 +52,10 @@ const App = () => {
                 <Route path="/trash" element={<Trash />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
-              <Route path="/admin" element={<AdminLoginPage />} />
-              
+                <Route path="/admin" element={<AdminNavPane />}>
+                <Route path="/admin/adminLogin" element={<AdminLoginPage />} />
+                <Route path="/admin/adminHome" element={<AdminHomePage />} />
+              </Route>
             </Routes>
           </div>
         </div>
