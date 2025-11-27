@@ -39,7 +39,8 @@ const App = () => {
           {/* <NavPane /> */}
           <div style={{ display: "flex", flex: 1, minHeight: winHeight}}>
             <Routes>
-              <Route path ="/" element={<NavPane />}>
+              <Route element={<NavPane />}>
+                <Route path="/" element={<Navigate to="/home" />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -50,6 +51,7 @@ const App = () => {
                 <Route path="/settings" element={<Settings />} />
               </Route>
               <Route path="/admin" element={<AdminLoginPage />} />
+              
             </Routes>
           </div>
         </div>
