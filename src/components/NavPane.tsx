@@ -147,7 +147,7 @@ const NavPane = (): JSX.Element => {
                     style={styles.item}
                     onClick={() => navigate("/admin/adminLogin")}
                   >
-                    Admin Login
+                    {`Admin Portal (Admin Login)`}
                   </div>
                   <div style={styles.item}>Please login!!</div>
                 </>
