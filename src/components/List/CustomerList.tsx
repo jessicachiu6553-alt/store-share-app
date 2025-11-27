@@ -96,65 +96,114 @@ export default function CustomerTable() {
             {`Showing data ${startIndex + 1} to ${Math.min(endIndex, customers.length)} of ${customers.length} entries`}
           </div>
 
-          {/* Pagination */}
+ {/* Pagination */}
           <div style={styles.paginationContainer}>
             {/* Previous button */}
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               style={styles.paginationButton}
+              disabled={currentPage === 1}
             >
               {"<"}
             </button>
 
-            {/* Page 1 */}
-            <button
-              onClick={() => setCurrentPage(1)}
-              style={currentPage === 1 ? styles.paginationButtonActive : styles.paginationButton}
-            >
-              1
-            </button>
+            {/* Render page numbers dynamically */}
+            {(() => {
+              const pages = [];
+              const maxVisiblePages = 7; // Total buttons to show including ellipsis
+              
+              if (totalPages <= maxVisiblePages) {
+                // Show all pages if total is small
+                for (let i = 1; i <= totalPages; i++) {
+                  pages.push(
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i)}
+                      style={currentPage === i ? styles.paginationButtonActive : styles.paginationButton}
+                    >
+                      {i}
+                    </button>
+                  );
+                }
+              } else {
+                // Always show first page
+                pages.push(
+                  <button
+                    key={1}
+                    onClick={() => setCurrentPage(1)}
+                    style={currentPage === 1 ? styles.paginationButtonActive : styles.paginationButton}
+                  >
+                    1
+                  </button>
+                );
 
-            {/* Page 2 */}
-            <button
-              onClick={() => setCurrentPage(2)}
-              style={currentPage === 2 ? styles.paginationButtonActive : styles.paginationButton}
-            >
-              2
-            </button>
+                // Calculate range around current page
+                let startPage = Math.max(2, currentPage - 1);
+                let endPage = Math.min(totalPages - 1, currentPage + 1);
 
-            {/* Page 3 */}
-            <button
-              onClick={() => setCurrentPage(3)}
-              style={currentPage === 3 ? styles.paginationButtonActive : styles.paginationButton}
-            >
-              3
-            </button>
+                // Adjust range if at start
+                if (currentPage <= 3) {
+                  startPage = 2;
+                  endPage = Math.min(4, totalPages - 1);
+                }
 
-            {/* Page 4 */}
-            <button
-              onClick={() => setCurrentPage(4)}
-              style={currentPage === 4 ? styles.paginationButtonActive : styles.paginationButton}
-            >
-              4
-            </button>
+                // Adjust range if at end
+                if (currentPage >= totalPages - 2) {
+                  startPage = Math.max(2, totalPages - 3);
+                  endPage = totalPages - 1;
+                }
 
-            {/* Ellipsis */}
-            <div style={styles.paginationEllipsis}>
-              ...
-            </div>
+                // Show ellipsis after first page if needed
+                if (startPage > 2) {
+                  pages.push(
+                    <div key="ellipsis-start" style={styles.paginationEllipsis}>
+                      ...
+                    </div>
+                  );
+                }
 
-            {/* Last page */}
-            <button
-              onClick={() => setCurrentPage(totalPages)}
-              style={styles.paginationButton}
-            >
-              40
-            </button>
+                // Show middle pages
+                for (let i = startPage; i <= endPage; i++) {
+                  pages.push(
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i)}
+                      style={currentPage === i ? styles.paginationButtonActive : styles.paginationButton}
+                    >
+                      {i}
+                    </button>
+                  );
+                }
+
+                // Show ellipsis before last page if needed
+                if (endPage < totalPages - 1) {
+                  pages.push(
+                    <div key="ellipsis-end" style={styles.paginationEllipsis}>
+                      ...
+                    </div>
+                  );
+                }
+
+                // Always show last page
+                pages.push(
+                  <button
+                    key={totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                    style={currentPage === totalPages ? styles.paginationButtonActive : styles.paginationButton}
+                  >
+                    {totalPages}
+                  </button>
+                );
+              }
+
+              return pages;
+            })()}
 
             {/* Next button */}
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               style={styles.paginationButton}
+              disabled={currentPage === totalPages}
             >
               {">"}
             </button>
