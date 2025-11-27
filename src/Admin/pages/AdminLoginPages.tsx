@@ -1,0 +1,57 @@
+import { useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuthStore } from '../../store/useAuthStore'
+
+const AdminLoginPage = () => {
+  const [username, setUsername] = useState('JohnDoe')
+  const [password, setPassword] = useState('Password123213123424234!')
+  const navigate = useNavigate()
+  const login = useAuthStore((state) => state.login)
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    login(username, password)
+    navigate('/home')
+  }
+
+  return (
+    <div style={styles.container}>
+      <h2>Admin Login</h2>
+      <form onSubmit={handleSubmit} style={styles.form}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  )
+}
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: '80px',
+    // backgroundColor: 'red',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '250px',
+    gap: '10px'
+  }
+}
+
+export default AdminLoginPage

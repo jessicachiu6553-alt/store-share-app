@@ -20,7 +20,7 @@ const PageTopBar = () => {
   return (
     <nav style={styles.nav}>
       <div style={styles.pageHeaderText}>
-        Dashboard
+        All Files
       </div>
       <div style={styles.links}>
         {/* <div>{`location: ${location.pathname}`}</div> */}

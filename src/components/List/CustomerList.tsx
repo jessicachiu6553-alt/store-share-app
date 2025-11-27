@@ -169,7 +169,7 @@ export default function CustomerTable() {
     wrapper: {
       width: "100%",
       maxWidth: "1200px",
-      margin: "0 auto",
+      // margin: "0 auto",
     //   padding: isMobile ? "20px 10px" : "40px 20px",
       display: "flex",
       justifyContent: "center",
@@ -179,11 +179,11 @@ export default function CustomerTable() {
     container: {
       position: "relative",
       width: "100%",
-      maxWidth: "968px",
+      // maxWidth: "968px",
     //   minHeight: "812px",
       backgroundColor: "white",
       borderRadius: "25px",
-      boxShadow: "0 10px 60px rgba(226, 236, 249, 0.5)",
+      // boxShadow: "0 10px 60px rgba(226, 236, 249, 0.5)",
       padding:"10px 50px",
       marginBottom: "40px",
     },

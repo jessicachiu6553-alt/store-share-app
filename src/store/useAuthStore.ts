@@ -38,6 +38,16 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.removeItem('authUser')
   },
 
+  adminLogin: (username: string, password: string) => {
+        // Demo: Accept any non-empty username/password
+    if (username && password) {
+      const user: User = { username: username, email: `${username}@gmail.com`, userId: `uid-  ${Math.random().toString(12)}` }
+      set({ user:user, isAuthenticated: true })
+      localStorage.setItem('authUser', JSON.stringify(user))
+    }
+  },
+
+
   initializeAuth: () => {
     const storedUser = localStorage.getItem('authUser')
     if (storedUser) {
