@@ -39,7 +39,7 @@ const App = () => {
         {/* <NavTopbar /> */}
         <div>
           {/* <NavPane /> */}
-          <div style={{ display: "flex", flex: 1, minHeight: winHeight}}>
+          <div style={{ display: "flex", flex: 1, minHeight: winHeight }}>
             <Routes>
               <Route element={<NavPane />}>
                 <Route path="/" element={<Navigate to="/home" />} />
@@ -52,9 +52,14 @@ const App = () => {
                 <Route path="/trash" element={<Trash />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
-                <Route path="/admin" element={<AdminNavPane />}>
-                <Route path="/admin/adminLogin" element={<AdminLoginPage />} />
+              <Route path="/admin" element={<AdminNavPane />}>
+                <Route path="/admin" element={<Navigate to="/admin/adminHome" />} />
                 <Route path="/admin/adminHome" element={<AdminHomePage />} />
+                <Route path="/admin/userManagement" element={<AdminHomePage />} />
+                <Route path="/admin/analytics" element={<AdminHomePage />} />
+                <Route path="/admin/notification" element={<AdminHomePage />} />
+                <Route path="/admin/settings" element={<AdminHomePage />} />
+                <Route path="/admin/adminLogin" element={<AdminLoginPage />} />
               </Route>
             </Routes>
           </div>

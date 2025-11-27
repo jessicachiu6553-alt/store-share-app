@@ -5,14 +5,14 @@ import { GiDuck } from "react-icons/gi";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const AdminNavPane = (): JSX.Element => {
-  const { isAuthenticated, user, logout, adminLogout } = useAuthStore()
+  const { isAuthenticated, user, logout, adminLogout } = useAuthStore();
   const location = useLocation();
   const navigate = useNavigate();
   const isActive = (path: string) => location.pathname === path;
   const handleAdminLogout = () => {
-    adminLogout()
-    navigate('/admin/adminLogin')
-  }
+    adminLogout();
+    navigate("/admin/adminLogin");
+  };
 
   return (
     <>
@@ -44,17 +44,7 @@ const AdminNavPane = (): JSX.Element => {
           <div style={styles.sectionWrap}>
             {/* UPPER PART */}
             <div style={styles.upperSectionWrap}>
-              {/* <div style={styles.item}>
-              Welcome
-              {user && user.username
-                ? ", " + user?.username
-                : "! Please login!"}
-            </div> */}
               {/* <div>location: {location.pathname}</div> */}
-              {/* <div>username: {user ? user.username: "No user"}</div>
-          <div>userId: {user ? user.userId: "No user"}</div>
-          <div>useremail: {user ? user.email: "No user"}</div> */}
-
               <div
                 style={
                   isActive("admin/adminHome")
@@ -78,11 +68,11 @@ const AdminNavPane = (): JSX.Element => {
 
               <div
                 style={
-                  isActive("/admin/Analytics")
+                  isActive("/admin/analytics")
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/admin/Analytics")}
+                onClick={() => navigate("/admin/analytics")}
               >
                 Analytics
               </div>
@@ -97,17 +87,19 @@ const AdminNavPane = (): JSX.Element => {
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/settings")}
+                onClick={() => navigate("/admin/notification")}
               >
                 Notification
               </div>
               <div
                 style={
-                  isActive("/settings") ? styles.itemSelected : styles.item
+                  isActive("/admin/settings")
+                    ? styles.itemSelected
+                    : styles.item
                 }
-                onClick={() => navigate("/settings")}
+                onClick={() => navigate("/admin/settings")}
               >
-                Settings
+                Admin Settings
               </div>
               {user && isAuthenticated ? (
                 <>
@@ -117,7 +109,6 @@ const AdminNavPane = (): JSX.Element => {
 
                   <div style={styles.userCardWrap}>
                     <div style={styles.userCardRightWrap}>
-                      <div>Hello Admin!!</div>
                       <div style={styles.userName}>{user.username}</div>
                       <div style={styles.userEmail}>{user.email}</div>
                     </div>
@@ -161,8 +152,6 @@ const AdminNavPane = (): JSX.Element => {
   );
 };
 
-
-
 const styles: Record<string, React.CSSProperties> = {
   pane: {
     width: "250px",
@@ -172,7 +161,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "stretch",
     minHeight: "100%",
     overflowY: "auto",
-    display: "flex", 
+    display: "flex",
     // minHeight: winHeight
   },
   title: {
