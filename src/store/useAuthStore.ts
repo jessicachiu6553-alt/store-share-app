@@ -11,8 +11,9 @@ interface AuthState {
   username: string | null;
   email: string | null;
   userId: string | null;
-  isAuthenticated: boolean
-  isAdminLoggedIn?: boolean
+  isAuthenticated: boolean;
+  isAdminLoggedIn?: boolean;
+  accessToken?: string | null;
   login: (username: string, password: string) => void
   logout: () => void
   adminLogin: (username: string, password: string) => void
@@ -27,6 +28,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   userId: null,
   isAuthenticated: false,
   isAdminLoggedIn: false,
+  accessToken:null,
 
   login: (username: string, password: string) => {
     // Demo: Accept any non-empty username/password
