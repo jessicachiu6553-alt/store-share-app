@@ -8,19 +8,24 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { useFileStore } from "../../store/useFileStore";
 import { getFiles } from "../../api/filesAPI"; 
 import { FileDownloadButton } from "./FileDownloadButton";
+import { DeleteFilePopup } from "./DeleteFilePopup";
+import Buttons from "../Buttons";
+import { FileDeleteButton } from "./FileDeleteButton";
+
 
 export default function FileListTable() {
-//   const [files] = useState<FileListType[]>(sampleFileList);
+  //   const [files] = useState<FileListType[]>(sampleFileList);
 
   const [files, setFiles] = useState<FileListType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [popupOpen, setPopupOpen] = useState(false);
+
   const [isMobile, setIsMobile] = useState(false);
   const user = useAuthStore((state) => state.user);
   const userIdtoken = user?.id_token;
 
-
   const itemsPerPage = 8;
+  const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(files.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -38,7 +43,6 @@ export default function FileListTable() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   // ---------------------------------------------------------
   // 🔥 Fetch files automatically when the user logs in
   // ---------------------------------------------------------
@@ -50,7 +54,7 @@ export default function FileListTable() {
         setLoading(true);
         const response = await getFiles(userIdtoken);
 
-        console.log({response})
+        console.log({ response });
 
         // Expecting response.items from your getFiles() API
         setFiles(
@@ -73,14 +77,14 @@ export default function FileListTable() {
     };
 
     fetchFiles();
-  }, [userIdtoken,refreshKey]);
+  }, [userIdtoken, refreshKey]);
   // 🔥 This will run automatically **right after login**
 
+    const handleDeleted = (deletedKey: string) => {
+      setFiles(files.filter((f) => f.s3Key !== deletedKey));
+    };
 
-
-
-
-    if (loading) {
+  if (loading) {
     return (
       <div style={{ padding: "40px", textAlign: "center", fontSize: "18px" }}>
         Loading files...
@@ -103,20 +107,21 @@ export default function FileListTable() {
             <thead>
               <tr>
                 <th style={styles.tableHeader}>File Name</th>
-                <th style={styles.tableHeader}>userId</th>
-                <th style={styles.tableHeader}>fileId</th>
+                {/* <th style={styles.tableHeader}>userId</th> */}
+                {/* <th style={styles.tableHeader}>fileId</th> */}
                 <th style={styles.tableHeader}>content Type</th>
                 {/* <th style={styles.tableHeader}>Country</th> */}
                 {/* <th style={styles.tableHeaderStatus}>Status</th> */}
-                <th style={styles.tableHeader}>Download Button</th>
+                <th style={styles.tableHeader}>Download File</th>
+                <th style={styles.tableHeader}>Delete File</th>
               </tr>
             </thead>
             <tbody>
               {currentFileList.map((file) => (
                 <tr key={file.fileId} style={styles.tableRow}>
                   <td style={styles.tableCell}>{file.fileName}</td>
-                  <td style={styles.tableCell}>{file.userId}</td>
-                  <td style={styles.tableCell}>{file.fileId}</td>
+                  {/* <td style={styles.tableCell}>{file.userId}</td> */}
+                  {/* <td style={styles.tableCell}>{file.fileId}</td> */}
                   <td style={styles.tableCell}>{file.contentType}</td>
                   {/* <td style={styles.tableCell}>{file.country}</td> */}
                   {/* <td style={styles.tableCellStatus}>
@@ -134,6 +139,13 @@ export default function FileListTable() {
                     <FileDownloadButton
                       s3Key={file.s3Key}
                       fileName={file.fileName}
+                    />
+                  </td>
+                  <td>
+                    <FileDeleteButton
+                      s3Key={file.s3Key}
+                      fileName={file.fileName}
+                      onDeleted={() => handleDeleted(file.s3Key)}
                     />
                   </td>
                 </tr>
