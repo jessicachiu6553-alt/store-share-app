@@ -1,6 +1,6 @@
 // src/components/UploadPopup.tsx
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getPresignedUploadUrl, uploadFileToPresignedUrl } from "../api/uploadFileAPI";
 import { useAuthStore } from "../store/useAuthStore";
 import { useFileStore } from "../store/useFileStore";
@@ -14,7 +14,9 @@ const UploadPopup = ({ open, onClose }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [s3Key, setS3Key] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const refreshKey = useFileStore((state) => state.refreshKey);
   const triggerRefresh = useFileStore((state) => state.triggerRefresh);
+
 
   const idToken = useAuthStore((s) => s.user?.id_token);
 
@@ -47,6 +49,8 @@ const UploadPopup = ({ open, onClose }: Props) => {
       alert("Upload failed!");
     } finally {
       setIsUploading(false);
+      setS3Key(null);
+      setFile(null);
       triggerRefresh();
     }
   };

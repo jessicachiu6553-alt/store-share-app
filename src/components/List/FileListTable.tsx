@@ -107,8 +107,8 @@ export default function FileListTable() {
             <thead>
               <tr>
                 <th style={styles.tableHeader}>File Name</th>
-                {/* <th style={styles.tableHeader}>userId</th> */}
-                {/* <th style={styles.tableHeader}>fileId</th> */}
+                <th style={styles.tableHeader}>userId</th>
+                <th style={styles.tableHeader}>fileId</th>
                 <th style={styles.tableHeader}>content Type</th>
                 {/* <th style={styles.tableHeader}>Country</th> */}
                 {/* <th style={styles.tableHeaderStatus}>Status</th> */}
@@ -120,8 +120,8 @@ export default function FileListTable() {
               {currentFileList.map((file) => (
                 <tr key={file.fileId} style={styles.tableRow}>
                   <td style={styles.tableCell}>{file.fileName}</td>
-                  {/* <td style={styles.tableCell}>{file.userId}</td> */}
-                  {/* <td style={styles.tableCell}>{file.fileId}</td> */}
+                  <td style={styles.tableCell}>{file.userId}</td>
+                  <td style={styles.tableCell}>{file.fileId}</td>
                   <td style={styles.tableCell}>{file.contentType}</td>
                   {/* <td style={styles.tableCell}>{file.country}</td> */}
                   {/* <td style={styles.tableCellStatus}>
@@ -438,11 +438,13 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "Poppins, sans-serif",
     fontWeight: 500,
     color: "#292d32",
-    //   fontSize: isMobile ? "12px" : "14px",
     fontSize: "14px",
     letterSpacing: "-0.14px",
     padding: "20px 8px 20px 0",
-    whiteSpace: "nowrap",
+    whiteSpace: "nowrap", // keep text in a single line
+    overflow: "hidden", // hide overflow content
+    textOverflow: "ellipsis", // show ... when content is too long
+    maxWidth: 200, // maximum width for the cell
     textAlign: "left",
   },
   tableCellStatus: {
