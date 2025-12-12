@@ -5,6 +5,7 @@ import {
   sampleFileListKeyList,
 } from "./sampleFileList";
 import { useAuthStore } from "../../store/useAuthStore";
+import { useFileStore } from "../../store/useFileStore";
 import { getFiles } from "../../api/filesAPI"; 
 import { FileDownloadButton } from "./FileDownloadButton";
 
@@ -24,6 +25,7 @@ export default function FileListTable() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentFileList = files.slice(startIndex, endIndex);
+  const refreshKey = useFileStore((state) => state.refreshKey);
 
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function FileListTable() {
   }, []);
 
 
-   // ---------------------------------------------------------
+  // ---------------------------------------------------------
   // 🔥 Fetch files automatically when the user logs in
   // ---------------------------------------------------------
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function FileListTable() {
     };
 
     fetchFiles();
-  }, [userIdtoken]);
+  }, [userIdtoken,refreshKey]);
   // 🔥 This will run automatically **right after login**
 
 

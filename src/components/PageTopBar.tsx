@@ -2,11 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { useLocation } from "react-router-dom";
 import Buttons from "./Buttons";
+import { useState } from "react";
+import UploadPopup from "./UploadPopup";
 
 const PageTopBar = () => {
   const { isAuthenticated, user, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -19,9 +22,7 @@ const PageTopBar = () => {
 
   return (
     <nav style={styles.nav}>
-      <div style={styles.pageHeaderText}>
-        All Files
-      </div>
+      <div style={styles.pageHeaderText}>All Files</div>
       <div style={styles.links}>
         {/* <div>{`location: ${location.pathname}`}</div> */}
         {isAuthenticated ? (
@@ -31,19 +32,20 @@ const PageTopBar = () => {
               label="Upload +"
               onClick={() => {
                 console.log("onPress Upload");
+                setUploadOpen(true);
               }}
-              btnColor= "btnBlue"
+              btnColor="btnBlue"
             />
-            <Buttons
-              label="Logout"
-              onClick={handleLogout}
-              btnColor= "btnRed"
+            <Buttons label="Logout" onClick={handleLogout} btnColor="btnRed" />
+            <UploadPopup
+              open={uploadOpen}
+              // open={true}
+              onClose={() => setUploadOpen(false)}
             />
-
           </>
         ) : (
           <>
-            <Buttons label="LogIn" onClick={handleLogin} btnColor="btnCyan"/>
+            <Buttons label="LogIn" onClick={handleLogin} btnColor="btnCyan" />
           </>
         )}
       </div>
