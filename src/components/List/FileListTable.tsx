@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react";
-// import { Search, ChevronDown } from "lucide-react";
-// import { customersData } from "../data/customers";
 import {
   FileListType,
   sampleFileList,
   sampleFileListKeyList,
 } from "./sampleFileList";
+import { useAuthStore } from "../../store/useAuthStore";
+import { getFiles } from "../../api/filesAPI"; 
 
 export default function FileListTable() {
-  const [customers] = useState<FileListType[]>(sampleFileList);
+//   const [files] = useState<FileListType[]>(sampleFileList);
+
+  const [files, setFiles] = useState<FileListType[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const user = useAuthStore((state) => state.user);
+  const userIdtoken = user?.id_token;
+
+
   const itemsPerPage = 8;
+  const totalPages = Math.ceil(files.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentFileList = files.slice(startIndex, endIndex);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,10 +35,55 @@ export default function FileListTable() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const totalPages = Math.ceil(customers.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentFileList = customers.slice(startIndex, endIndex);
+
+   // ---------------------------------------------------------
+  // 🔥 Fetch files automatically when the user logs in
+  // ---------------------------------------------------------
+  useEffect(() => {
+    if (!userIdtoken) return; // Not logged in → skip
+
+    const fetchFiles = async () => {
+      try {
+        setLoading(true);
+        const response = await getFiles(userIdtoken);
+
+        console.log({response})
+
+        // Expecting response.items from your getFiles() API
+        setFiles(
+          response.files.map((f) => ({
+            fileName: f.fileName,
+            userId: f.userId,
+            fileId: f.fileId,
+            createdAt: 0,
+            contentType: "N/A",
+            s3Key: f.url ?? "",
+            fieldId: f.fieldId,
+            isShared: "Active",
+          }))
+        );
+      } catch (err) {
+        console.error("Error loading file list:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFiles();
+  }, [userIdtoken]);
+  // 🔥 This will run automatically **right after login**
+
+
+
+
+
+    if (loading) {
+    return (
+      <div style={{ padding: "40px", textAlign: "center", fontSize: "18px" }}>
+        Loading files...
+      </div>
+    );
+  }
 
   return (
     <div style={styles.wrapper}>
@@ -34,7 +91,7 @@ export default function FileListTable() {
         {/* Header */}
         <div style={styles.headerContainer}>
           <div style={styles.headerTitle}>All Files</div>
-          <div style={styles.headerSubtitle}>Active Members</div>
+          {/* <div style={styles.headerSubtitle}>Active Members</div> */}
         </div>
 
         {/* Table */}
@@ -42,31 +99,31 @@ export default function FileListTable() {
           <table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.tableHeader}>Customer Name</th>
-                <th style={styles.tableHeader}>Company</th>
-                <th style={styles.tableHeader}>Phone Number</th>
-                <th style={styles.tableHeader}>Email</th>
-                <th style={styles.tableHeader}>Country</th>
+                <th style={styles.tableHeader}>File Name</th>
+                <th style={styles.tableHeader}>userId</th>
+                <th style={styles.tableHeader}>fileId</th>
+                <th style={styles.tableHeader}>content Type</th>
+                {/* <th style={styles.tableHeader}>Country</th> */}
                 <th style={styles.tableHeaderStatus}>Status</th>
               </tr>
             </thead>
             <tbody>
               {currentFileList.map((file) => (
-                <tr key={file.id} style={styles.tableRow}>
-                  <td style={styles.tableCell}>{file.name}</td>
-                  <td style={styles.tableCell}>{file.company}</td>
-                  <td style={styles.tableCell}>{file.phone}</td>
-                  <td style={styles.tableCell}>{file.email}</td>
-                  <td style={styles.tableCell}>{file.country}</td>
+                <tr key={file.fileId} style={styles.tableRow}>
+                  <td style={styles.tableCell}>{file.fileName}</td>
+                  <td style={styles.tableCell}>{file.userId}</td>
+                  <td style={styles.tableCell}>{file.fileId}</td>
+                  <td style={styles.tableCell}>{file.contentType}</td>
+                  {/* <td style={styles.tableCell}>{file.country}</td> */}
                   <td style={styles.tableCellStatus}>
                     <span
                       style={
-                        file.status === "Active"
+                        file.isShared === "Active"
                           ? styles.statusBadgeActive
                           : styles.statusBadgeInactive
                       }
                     >
-                      {file.status}
+                      {file.isShared}
                     </span>
                   </td>
                 </tr>
@@ -80,8 +137,8 @@ export default function FileListTable() {
           <div style={styles.footerText}>
             {`Showing data ${startIndex + 1} to ${Math.min(
               endIndex,
-              customers.length
-            )} of ${customers.length} entries`}
+              files.length
+            )} of ${files.length} entries`}
           </div>
 
           {/* Pagination */}
