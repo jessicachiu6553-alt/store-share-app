@@ -6,6 +6,7 @@ import {
 } from "./sampleFileList";
 import { useAuthStore } from "../../store/useAuthStore";
 import { getFiles } from "../../api/filesAPI"; 
+import { FileDownloadButton } from "./FileDownloadButton";
 
 export default function FileListTable() {
 //   const [files] = useState<FileListType[]>(sampleFileList);
@@ -57,7 +58,7 @@ export default function FileListTable() {
             fileId: f.fileId,
             createdAt: 0,
             contentType: f.contentType,
-            s3Key: f.url ?? "",
+            s3Key: f.s3Key ?? "",
             fieldId: f.fieldId,
             isShared: "Active",
           }))
@@ -104,7 +105,8 @@ export default function FileListTable() {
                 <th style={styles.tableHeader}>fileId</th>
                 <th style={styles.tableHeader}>content Type</th>
                 {/* <th style={styles.tableHeader}>Country</th> */}
-                <th style={styles.tableHeaderStatus}>Status</th>
+                {/* <th style={styles.tableHeaderStatus}>Status</th> */}
+                <th style={styles.tableHeader}>Download Button</th>
               </tr>
             </thead>
             <tbody>
@@ -115,7 +117,7 @@ export default function FileListTable() {
                   <td style={styles.tableCell}>{file.fileId}</td>
                   <td style={styles.tableCell}>{file.contentType}</td>
                   {/* <td style={styles.tableCell}>{file.country}</td> */}
-                  <td style={styles.tableCellStatus}>
+                  {/* <td style={styles.tableCellStatus}>
                     <span
                       style={
                         file.isShared === "Active"
@@ -125,6 +127,12 @@ export default function FileListTable() {
                     >
                       {file.isShared}
                     </span>
+                  </td> */}
+                  <td>
+                    <FileDownloadButton
+                      s3Key={file.s3Key}
+                      fileName={file.fileName}
+                    />
                   </td>
                 </tr>
               ))}
