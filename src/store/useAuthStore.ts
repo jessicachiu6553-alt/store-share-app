@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { getEnv } from '../../env';
 
 interface User {
   username: string;
@@ -14,6 +15,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isAdminLoggedIn?: boolean;
   accessToken?: string | null;
+  id_token?: string | null;
   login: (username: string, password: string) => void
   logout: () => void
   adminLogin: (username: string, password: string) => void
@@ -29,10 +31,24 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   isAdminLoggedIn: false,
   accessToken:null,
+  id_token: null,
 
-  login: (username: string, password: string) => {
+  login: async (username: string, password: string) => {
     // Demo: Accept any non-empty username/password
     if (username && password) {
+      const CLIENT_ID = getEnv('CLIENT_ID');
+      const CLIENT_SECRET = getEnv('CLIENT_SECRET'); // only for dev/testing
+      const COGNITO_DOMAIN = getEnv('COGNITO_DOMAIN'); // Hosted UI domain
+      
+
+      try {
+
+      } catch {
+
+      }
+
+
+
       const user: User = { username: username, email: `${username}@gmail.com`, userId: `uid-  ${Math.random().toString(12)}` }
       set({ user:user, isAuthenticated: true })
       localStorage.setItem('authUser', JSON.stringify(user))
