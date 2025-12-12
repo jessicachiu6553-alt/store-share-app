@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { getEnv } from '../env';
+import { AWSlogin } from '../api/loginAPI';
 
 interface User {
   username: string;
@@ -42,7 +43,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       
 
       try {
-
+        const response = await AWSlogin({ username, password })
+        console.log("AWS login response", response)
       } catch {
 
       }
