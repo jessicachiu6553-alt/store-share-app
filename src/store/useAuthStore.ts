@@ -6,6 +6,7 @@ interface User {
   username: string;
   email: string;
   userId: string;
+  id_token?: string | null;
 }
 
 interface AuthState {
@@ -37,23 +38,23 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (username: string, password: string) => {
     // Demo: Accept any non-empty username/password
     if (username && password) {
-      const CLIENT_ID = getEnv('CLIENT_ID');
-      const CLIENT_SECRET = getEnv('CLIENT_SECRET'); // only for dev/testing
-      const COGNITO_DOMAIN = getEnv('COGNITO_DOMAIN'); // Hosted UI domain
-      
-
       try {
         const response = await AWSlogin({ username, password })
-        console.log("AWS login response", response)
-      } catch {
-
+        // console.log("AWS login response", response)
+        if (response.AuthenticationResult) {
+          // console.log("id_token?", response.AuthenticationResult.IdToken);
+          const user: User = {
+            username: username,
+            email: `${username}@gmail.com`,
+            userId: `uid-  ${Math.random().toString(12)}`,
+            id_token: response.AuthenticationResult.IdToken
+          };
+          set({ user: user, isAuthenticated: true });
+          localStorage.setItem('authUser', JSON.stringify(user))
+        }
+      } catch (err) {
+        console.error('AWS login error', err)
       }
-
-
-
-      const user: User = { username: username, email: `${username}@gmail.com`, userId: `uid-  ${Math.random().toString(12)}` }
-      set({ user:user, isAuthenticated: true })
-      localStorage.setItem('authUser', JSON.stringify(user))
     }
   },
 
