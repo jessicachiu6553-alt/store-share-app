@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/useAuthStore'
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('johndoe@gmail.com')
-  const [password, setPassword] = useState('Password123213123424234!')
+  const [username, setUsername] = useState('Test1@gmail.com')
+  const [password, setPassword] = useState('Password123!')
   const navigate = useNavigate()
   const login = useAuthStore((state) => state.login)
 
