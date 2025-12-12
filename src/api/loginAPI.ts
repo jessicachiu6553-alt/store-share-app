@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import CryptoJS from "crypto-js"; // npm install crypto-js
-import { getEnv } from '../../env';
+import { getEnv } from '../env';
 
 // ---- Types ----
 interface CognitoTokenResponse {

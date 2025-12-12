@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { getEnv } from '../../env';
+import { getEnv } from '../env';
 
 interface User {
   username: string;
