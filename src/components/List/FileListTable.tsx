@@ -56,7 +56,7 @@ export default function FileListTable() {
             userId: f.userId,
             fileId: f.fileId,
             createdAt: 0,
-            contentType: "N/A",
+            contentType: f.contentType,
             s3Key: f.url ?? "",
             fieldId: f.fieldId,
             isShared: "Active",

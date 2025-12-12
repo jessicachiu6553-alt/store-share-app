@@ -7,6 +7,7 @@ export interface FileListType {
   s3Key: string;
   fieldId: string;
   isShared?: "Active" | "Inactive";
+  url?: string;
 }
 
 export const sampleFileListKeyList: string[] = [
