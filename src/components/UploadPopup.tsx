@@ -63,7 +63,6 @@ const UploadPopup = ({ open, onClose }: Props) => {
         <input type="file" onChange={handleSelectFile} />
 
         {file && <p>Selected: <b>{file.name}</b></p>}
-        {s3Key? <>${s3Key}</> :<></>}
         {s3Key && <p>S3 Key: <code>{s3Key}</code></p>}
 
         <div style={styles.actions}>
