@@ -11,6 +11,7 @@ import { FileDownloadButton } from "./FileDownloadButton";
 import { DeleteFilePopup } from "./DeleteFilePopup";
 import Buttons from "../Buttons";
 import { FileDeleteButton } from "./FileDeleteButton";
+import { PublicToggleButton } from "./PublicToggleButton";
 
 
 export default function FileListTable() {
@@ -114,6 +115,7 @@ export default function FileListTable() {
                 {/* <th style={styles.tableHeaderStatus}>Status</th> */}
                 <th style={styles.tableHeader}>Download File</th>
                 <th style={styles.tableHeader}>Delete File</th>
+                <th style={styles.tableHeader}>Public Sharing</th>
               </tr>
             </thead>
             <tbody>
@@ -148,6 +150,12 @@ export default function FileListTable() {
                       onDeleted={() => handleDeleted(file.s3Key)}
                     />
                   </td>
+                  <td>
+                    <PublicToggleButton
+                      s3Key={file.s3Key}
+                      fileName={file.fileName}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -159,7 +167,7 @@ export default function FileListTable() {
           <div style={styles.footerText}>
             {`Showing data ${startIndex + 1} to ${Math.min(
               endIndex,
-              files.length
+              files.length,
             )} of ${files.length} entries`}
           </div>
 
@@ -193,7 +201,7 @@ export default function FileListTable() {
                       }
                     >
                       {i}
-                    </button>
+                    </button>,
                   );
                 }
               } else {
@@ -209,7 +217,7 @@ export default function FileListTable() {
                     }
                   >
                     1
-                  </button>
+                  </button>,
                 );
 
                 // Calculate range around current page
@@ -233,7 +241,7 @@ export default function FileListTable() {
                   pages.push(
                     <div key="ellipsis-start" style={styles.paginationEllipsis}>
                       ...
-                    </div>
+                    </div>,
                   );
                 }
 
@@ -250,7 +258,7 @@ export default function FileListTable() {
                       }
                     >
                       {i}
-                    </button>
+                    </button>,
                   );
                 }
 
@@ -259,7 +267,7 @@ export default function FileListTable() {
                   pages.push(
                     <div key="ellipsis-end" style={styles.paginationEllipsis}>
                       ...
-                    </div>
+                    </div>,
                   );
                 }
 
@@ -275,7 +283,7 @@ export default function FileListTable() {
                     }
                   >
                     {totalPages}
-                  </button>
+                  </button>,
                 );
               }
 

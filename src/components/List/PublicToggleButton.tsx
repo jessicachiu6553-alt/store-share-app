@@ -1,6 +1,11 @@
 import React from "react";
 import { startFileDownload } from "../../api/downloadFileAPI";
 import { useAuthStore } from "../../store/useAuthStore";
+import { useState } from 'react';
+import Toggle from 'react-toggle';
+//@ts-ignore
+import "react-toggle/style.css"; // Requires styles to render correctly
+
 
 interface Props {
   s3Key: string;
@@ -9,12 +14,15 @@ interface Props {
 
 export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName }) => {
   const user = useAuthStore((state) => state.user);
+  const [isBaconEnabled, setIsBaconEnabled] = useState(false);
   const userIdtoken = user?.id_token || "";
 
-  const handleDownload = async () => {
+  const handleToggleChange = async () => {
     try {
     
-    await startFileDownload(s3Key, userIdtoken);
+    // await startFileDownload(s3Key, userIdtoken);
+    console.log("Toggle Public!")
+    setIsBaconEnabled(!isBaconEnabled)
       
     } catch (err) {
       console.error("Download failed:", err);
@@ -23,18 +31,13 @@ export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName }) => {
   };
 
   return (
-    <button
-      onClick={handleDownload}
-      style={{
-        padding: "6px 12px",
-        backgroundColor: "yellow",
-        color: "white",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-      }}
-    >
-      Public
-    </button>
+    <>
+        <Toggle
+          id="bacon-status"
+          checked={isBaconEnabled}
+          onChange={handleToggleChange} 
+        />
+    </>
+
   );
 };
