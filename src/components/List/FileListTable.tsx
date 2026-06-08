@@ -34,7 +34,6 @@ export default function FileListTable() {
   const currentFileList = files.slice(startIndex, endIndex);
   const refreshKey = useFileStore((state) => state.refreshKey);
 
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -69,7 +68,7 @@ export default function FileListTable() {
             s3Key: f.s3Key ?? "",
             fieldId: f.fieldId,
             isPublic: f.isPublic,
-            shareToken: f.shareToken,
+            shareToken: f.shareToken ?? "",
           }))
         );
       } catch (err) {
@@ -163,7 +162,7 @@ export default function FileListTable() {
                       fileName={file.fileName}
                       // isPublic={file.isShared === "Active"? true: false}
                       // isPublic={false}
-                      isPublic={true}
+                      isPublic={file.isPublic}
                     />
                   </td>
                   <td>
@@ -172,7 +171,7 @@ export default function FileListTable() {
                       fileName={file.fileName}
                       // isPublic={file.isShared === "Active"? true: false}
                       // isPublic={false}
-                      isPublic={true}
+                      isPublic={file.isPublic}
                       onView={() => handleOnView(file.s3Key)}
                     />
                   </td>
