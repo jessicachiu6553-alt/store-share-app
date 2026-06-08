@@ -9,10 +9,12 @@ export interface FileListType {
   userId: string;
   fileId: string;
   createdAt: number;
+  isPublic: boolean;
   contentType: string;
   s3Key: string;
   fieldId: string;
   isShared?: "Active" | "Inactive";
+  shareToken:string;
   url?: string;
 }
 

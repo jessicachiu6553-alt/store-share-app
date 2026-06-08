@@ -68,7 +68,8 @@ export default function FileListTable() {
             contentType: f.contentType,
             s3Key: f.s3Key ?? "",
             fieldId: f.fieldId,
-            isShared: "Active",
+            isPublic: f.isPublic,
+            shareToken: f.shareToken,
           }))
         );
       } catch (err) {
