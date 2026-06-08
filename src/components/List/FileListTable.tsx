@@ -12,6 +12,7 @@ import { DeleteFilePopup } from "./DeleteFilePopup";
 import Buttons from "../Buttons";
 import { FileDeleteButton } from "./FileDeleteButton";
 import { PublicToggleButton } from "./PublicToggleButton";
+import { ViewPublicLinkButton } from "./ViewPublicLinkButton";
 
 
 export default function FileListTable() {
@@ -116,6 +117,7 @@ export default function FileListTable() {
                 <th style={styles.tableHeader}>Download File</th>
                 <th style={styles.tableHeader}>Delete File</th>
                 <th style={styles.tableHeader}>Public Sharing</th>
+                <th style={styles.tableHeader}>Public Link</th>
               </tr>
             </thead>
             <tbody>
@@ -154,6 +156,13 @@ export default function FileListTable() {
                     <PublicToggleButton
                       s3Key={file.s3Key}
                       fileName={file.fileName}
+                    />
+                  </td>
+                  <td>
+                    <ViewPublicLinkButton
+                      s3Key={file.s3Key}
+                      fileName={file.fileName}
+                      onDeleted={() => handleDeleted(file.s3Key)}
                     />
                   </td>
                 </tr>

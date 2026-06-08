@@ -21,7 +21,7 @@ export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName }) => {
     try {
     
     // await startFileDownload(s3Key, userIdtoken);
-    console.log("Toggle Public!")
+    // console.log("Toggle Public!")
     setIsBaconEnabled(!isBaconEnabled)
       
     } catch (err) {
@@ -30,14 +30,14 @@ export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName }) => {
     }
   };
 
+
   return (
     <>
         <Toggle
           id="bacon-status"
           checked={isBaconEnabled}
-          onChange={handleToggleChange} 
+          onChange={handleToggleChange}
         />
     </>
-
   );
 };
