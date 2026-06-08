@@ -21,8 +21,9 @@ export const tooglePublic = async (
 
   if (!res.ok) {
     const data = await res.json();
-    throw new Error(data.message || "Failed to delete file");
+    throw new Error(data.message || "Failed to toogle Public");
   }
 
   return await res.json();
 };
+
