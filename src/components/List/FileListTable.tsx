@@ -86,6 +86,10 @@ export default function FileListTable() {
       setFiles(files.filter((f) => f.s3Key !== deletedKey));
     };
 
+    const handleOnView = (s3Key: string) => {
+      console.log("OnClick View!")
+    }
+
   if (loading) {
     return (
       <div style={{ padding: "40px", textAlign: "center", fontSize: "18px" }}>
@@ -116,7 +120,7 @@ export default function FileListTable() {
                 {/* <th style={styles.tableHeaderStatus}>Status</th> */}
                 <th style={styles.tableHeader}>Download File</th>
                 <th style={styles.tableHeader}>Delete File</th>
-                <th style={styles.tableHeader}>Public Sharing</th>
+                <th style={styles.tableHeader}>Public Share</th>
                 <th style={styles.tableHeader}>Public Link</th>
               </tr>
             </thead>
@@ -156,13 +160,19 @@ export default function FileListTable() {
                     <PublicToggleButton
                       s3Key={file.s3Key}
                       fileName={file.fileName}
+                      // isPublic={file.isShared === "Active"? true: false}
+                      // isPublic={false}
+                      isPublic={true}
                     />
                   </td>
                   <td>
                     <ViewPublicLinkButton
                       s3Key={file.s3Key}
                       fileName={file.fileName}
-                      onDeleted={() => handleDeleted(file.s3Key)}
+                      // isPublic={file.isShared === "Active"? true: false}
+                      // isPublic={false}
+                      isPublic={true}
+                      onView={() => handleOnView(file.s3Key)}
                     />
                   </td>
                 </tr>

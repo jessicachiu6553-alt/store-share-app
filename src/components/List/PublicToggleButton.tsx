@@ -10,23 +10,25 @@ import "react-toggle/style.css"; // Requires styles to render correctly
 interface Props {
   s3Key: string;
   fileName: string;
+  isPublic: boolean;
 }
 
-export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName }) => {
+export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName, isPublic }) => {
   const user = useAuthStore((state) => state.user);
-  const [isBaconEnabled, setIsBaconEnabled] = useState(false);
   const userIdtoken = user?.id_token || "";
+  const [isPublicFile, setIsPublicFile] = useState(isPublic)
+  
 
   const handleToggleChange = async () => {
     try {
     
     // await startFileDownload(s3Key, userIdtoken);
-    // console.log("Toggle Public!")
-    setIsBaconEnabled(!isBaconEnabled)
+    // console.log(`S3 Keys: ${s3Key}`)
+    setIsPublicFile(!isPublicFile)
       
     } catch (err) {
-      console.error("Download failed:", err);
-      alert("Failed to download file");
+      console.error("Toggle Public failed:", err);
+      alert("Toggle Public failed!");
     }
   };
 
@@ -35,7 +37,7 @@ export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName }) => {
     <>
         <Toggle
           id="bacon-status"
-          checked={isBaconEnabled}
+          checked={isPublicFile}
           onChange={handleToggleChange}
         />
     </>

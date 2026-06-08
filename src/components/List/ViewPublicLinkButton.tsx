@@ -6,14 +6,15 @@ import { DeleteFilePopup } from "./DeleteFilePopup";
 interface ViewPublicButtonProps {
   s3Key: string;
   fileName: string;
-  onDeleted?: () => void;
+  isPublic: boolean;
+  onView?: () => void;
 }
 
-export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, fileName, onDeleted }) => {
+export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, fileName, isPublic, onView }) => {
   const user = useAuthStore((state) => state.user);
   const userIdToken = user?.id_token || "";
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [isPublic, setIsPublic] = useState(true)
+  const [isPublicFile, setIsPublicFile] = useState(isPublic)
 
   return (
     <>
@@ -21,13 +22,14 @@ export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, f
         onClick={() => setConfirmOpen(true)}
         style={{
           padding: "6px 12px",
-          backgroundColor: "#e7902c",
+          backgroundColor: isPublicFile? "#e7902c": "grey",
           color: "white",
           border: "none",
           borderRadius: "6px",
           cursor: "pointer",
-        }}
-        disabled={isPublic}
+        }
+      }
+        disabled={!isPublicFile}
       >
         View
       </button>
@@ -38,7 +40,7 @@ export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, f
           fileName={fileName}
           userIdToken={userIdToken}
           onClose={() => setConfirmOpen(false)}
-          onDeleted={onDeleted}
+          onView={onView}
         />
       )}
     </>
@@ -51,22 +53,24 @@ interface ViewPublicLinkPopUpProps {
   fileName: string;
   userIdToken: string;
   onClose: () => void;
-  onDeleted?: () => void;
+  onView?: () => void;
 }
 
-export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({ s3Key, fileName, userIdToken, onClose, onDeleted }) => {
+export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({ s3Key, fileName, userIdToken, onClose, onView }) => {
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const handleDelete = async () => {
+
+  const handleCopyButton = async () => {
     setLoading(true);
     try {
     //   await deleteFile(s3Key, userIdToken);
-      onDeleted?.();
-      alert(`${fileName} deleted successfully`);
-      onClose();
+      await navigator.clipboard.writeText("Clicked Copy");
+      onView?.();
+      setCopied(true)
     } catch (err: any) {
-      console.error("Delete failed:", err);
-      alert(`Failed to delete file: ${err.message || err}`);
+      console.error("Copy to Clipboard failed:", err);
+      // alert(`Failed to delete file: ${err.message || err}`);
     } finally {
       setLoading(false);
     }
@@ -99,8 +103,11 @@ export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({ s3Key,
           gap: "16px",
         }}
       >
-        <h2 style={{ fontSize: "20px", fontWeight: 600 }}>Confirm Delete</h2>
-        <p>Are you sure you want to delete <strong>{fileName}</strong>?</p>
+        <h2 style={{ fontSize: "20px", fontWeight: 600 }}>Share link</h2>
+        <p>Share link of  <strong>{fileName}</strong> are as follow: </p>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero odio tempore minus ullam accusantium voluptate maiores perspiciatis ratione illo maxime magnam id quisquam totam aut distinctio ut quos, labore temporibus!</p>
+
+
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
           <button
             onClick={onClose}
@@ -116,18 +123,18 @@ export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({ s3Key,
             Cancel
           </button>
           <button
-            onClick={handleDelete}
+            onClick={handleCopyButton}
             disabled={loading}
             style={{
               padding: "8px 16px",
               borderRadius: "8px",
               border: "none",
-              backgroundColor: "#e74c3c",
+              backgroundColor: "#e7902c",
               color: "#fff",
               cursor: "pointer",
             }}
           >
-            {loading ? "Deleting..." : "Delete"}
+            {copied ? "Copied on Clipboard!" : "Copy"}
           </button>
         </div>
       </div>
