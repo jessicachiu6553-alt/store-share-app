@@ -6,15 +6,16 @@ import { DeleteFilePopup } from "./DeleteFilePopup";
 interface ViewPublicButtonProps {
   s3Key: string;
   fileName: string;
-  isPublic: boolean;
+  // isPublic: boolean;
+  isFilePublic: boolean;
+  setIsFilePublic: (value:boolean)=>void;
   onView?: () => void;
 }
 
-export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, fileName, isPublic, onView }) => {
+export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, fileName, isFilePublic, onView, setIsFilePublic }) => {
   const user = useAuthStore((state) => state.user);
   const userIdToken = user?.id_token || "";
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [isPublicFile, setIsPublicFile] = useState(isPublic)
 
   return (
     <>
@@ -22,14 +23,14 @@ export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, f
         onClick={() => setConfirmOpen(true)}
         style={{
           padding: "6px 12px",
-          backgroundColor: isPublicFile? "#e7902c": "grey",
+          backgroundColor: isFilePublic? "#e7902c": "grey",
           color: "white",
           border: "none",
           borderRadius: "6px",
           cursor: "pointer",
         }
       }
-        disabled={!isPublicFile}
+        disabled={!isFilePublic}
       >
         View
       </button>

@@ -55,7 +55,7 @@ export default function FileListTable() {
         setLoading(true);
         const response = await getFiles(userIdtoken);
 
-        console.log({ response });
+        // console.log({ response });
 
         // Expecting response.items from your getFiles() API
         setFiles(
@@ -125,58 +125,11 @@ export default function FileListTable() {
               </tr>
             </thead>
             <tbody>
-              {currentFileList.map((file) => (
-                <tr key={file.fileId} style={styles.tableRow}>
-                  <td style={styles.tableCell}>{file.fileName}</td>
-                  <td style={styles.tableCell}>{file.userId}</td>
-                  <td style={styles.tableCell}>{file.fileId}</td>
-                  <td style={styles.tableCell}>{file.contentType}</td>
-                  {/* <td style={styles.tableCell}>{file.country}</td> */}
-                  {/* <td style={styles.tableCellStatus}>
-                    <span
-                      style={
-                        file.isShared === "Active"
-                          ? styles.statusBadgeActive
-                          : styles.statusBadgeInactive
-                      }
-                    >
-                      {file.isShared}
-                    </span>
-                  </td> */}
-                  <td>
-                    <FileDownloadButton
-                      s3Key={file.s3Key}
-                      fileName={file.fileName}
-                    />
-                  </td>
-                  <td>
-                    <FileDeleteButton
-                      s3Key={file.s3Key}
-                      fileName={file.fileName}
-                      onDeleted={() => handleDeleted(file.s3Key)}
-                    />
-                  </td>
-                  <td>
-                    <PublicToggleButton
-                      s3Key={file.s3Key}
-                      fileName={file.fileName}
-                      // isPublic={file.isShared === "Active"? true: false}
-                      // isPublic={false}
-                      isPublic={file.isPublic}
-                    />
-                  </td>
-                  <td>
-                    <ViewPublicLinkButton
-                      s3Key={file.s3Key}
-                      fileName={file.fileName}
-                      // isPublic={file.isShared === "Active"? true: false}
-                      // isPublic={false}
-                      isPublic={file.isPublic}
-                      onView={() => handleOnView(file.s3Key)}
-                    />
-                  </td>
-                </tr>
-              ))}
+              {currentFileList.map((file)=> (
+                <FiletableRow 
+                handleDeleted={handleDeleted} 
+                handleOnView={handleOnView} 
+                listFileItem={file} />))}
             </tbody>
           </table>
         </div>
@@ -325,6 +278,87 @@ export default function FileListTable() {
     </div>
   );
 }
+
+
+
+interface FileTableRowProps {
+  listFileItem: FileListType;
+  handleDeleted: (deletedKey: string) => void
+  handleOnView: (s3Key: string)=>void
+}
+
+const FiletableRow: React.FC<FileTableRowProps> = ({listFileItem, handleDeleted, handleOnView}) =>{
+  const [file, setFile] = useState(listFileItem)
+  const [isFilePublic, setIsFilePublic] = useState(file.isPublic);
+  
+
+
+  useEffect(()=>{
+    console.log("handle?")
+  },[isFilePublic])
+
+
+  return (
+    <tr key={file.fileId} style={styles.tableRow}>
+      <td style={styles.tableCell}>{file.fileName}</td>
+      <td style={styles.tableCell}>{file.userId}</td>
+      <td style={styles.tableCell}>{file.fileId}</td>
+      <td style={styles.tableCell}>{file.contentType}</td>
+      {/* <td style={styles.tableCell}>{file.country}</td> */}
+      {/* <td style={styles.tableCellStatus}>
+                    <span
+                      style={
+                        file.isShared === "Active"
+                          ? styles.statusBadgeActive
+                          : styles.statusBadgeInactive
+                      }
+                    >
+                      {file.isShared}
+                    </span>
+                  </td> */}
+      <td>
+        <FileDownloadButton s3Key={file.s3Key} fileName={file.fileName} />
+      </td>
+      <td>
+        <FileDeleteButton
+          s3Key={file.s3Key}
+          fileName={file.fileName}
+          onDeleted={() => handleDeleted(file.s3Key)}
+        />
+      </td>
+      <td>
+        <PublicToggleButton
+          s3Key={file.s3Key}
+          fileName={file.fileName}
+          // isPublic={file.isShared === "Active"? true: false}
+          // isPublic={false}
+          isFilePublic={isFilePublic}
+          setIsFilePublic={setIsFilePublic}
+        />
+      </td>
+      <td>
+        <ViewPublicLinkButton
+          s3Key={file.s3Key}
+          fileName={file.fileName}
+          // isPublic={file.isShared === "Active"? true: false}
+          // isPublic={false}
+          isFilePublic={isFilePublic}
+          setIsFilePublic={setIsFilePublic}
+          onView={() => handleOnView(file.s3Key)}
+        />
+      </td>
+    </tr>
+  );
+};
+
+
+
+
+
+
+
+
+
 
 const styles: Record<string, React.CSSProperties> = {
   wrapper: {

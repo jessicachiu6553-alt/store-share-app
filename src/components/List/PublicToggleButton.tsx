@@ -6,25 +6,30 @@ import Toggle from 'react-toggle';
 //@ts-ignore
 import "react-toggle/style.css"; // Requires styles to render correctly
 import { tooglePublic } from "../../api/tooglePublicAPI";
+import { useFileStore } from "../../store/useFileStore";
 
 
 interface Props {
   s3Key: string;
   fileName: string;
-  isPublic: boolean;
+  isFilePublic: boolean;
+  setIsFilePublic: (value:boolean)=>void;
 }
 
-export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName, isPublic }) => {
+export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName, isFilePublic, setIsFilePublic}) => {
   const user = useAuthStore((state) => state.user);
   const userIdtoken = user?.id_token || "";
-  const [isPublicFile, setIsPublicFile] = useState(isPublic);
+
+  
   
 
   const handleToggleChange = async () => {
     try {
     
-      await tooglePublic(s3Key,!isPublicFile, userIdtoken)
-      setIsPublicFile(!isPublicFile)
+      const response = await tooglePublic(s3Key,!isFilePublic, userIdtoken)
+      // console.log("Handle Toogle Change response: ",{response})
+      // setIsPublicFile(!isPublicFile)
+      setIsFilePublic(!isFilePublic)
       
     } catch (err) {
       console.error("Toggle Public failed:", err);
@@ -37,7 +42,7 @@ export const PublicToggleButton: React.FC<Props> = ({ s3Key, fileName, isPublic 
     <>
         <Toggle
           id="bacon-status"
-          checked={isPublicFile}
+          checked={isFilePublic}
           onChange={handleToggleChange}
         />
     </>
