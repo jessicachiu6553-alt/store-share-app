@@ -2,34 +2,53 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../../store/useAuthStore";
 import { DeleteFilePopup } from "./DeleteFilePopup";
+import { getPublicDownloadLink } from "../../api/getPublicDownloadLink";
 
 interface ViewPublicButtonProps {
   s3Key: string;
   fileName: string;
   // isPublic: boolean;
   isFilePublic: boolean;
-  setIsFilePublic: (value:boolean)=>void;
-  onView?: () => void;
+  setIsFilePublic: (value: boolean) => void;
+  // handleOnView?: () => void;
+  fieldId: string;
 }
 
-export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, fileName, isFilePublic, onView, setIsFilePublic }) => {
+export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({
+  s3Key,
+  fileName,
+  isFilePublic,
+  // handleOnView,
+  setIsFilePublic,
+  fieldId,
+}) => {
   const user = useAuthStore((state) => state.user);
   const userIdToken = user?.id_token || "";
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [publicDownloadLink, setPublicDownloadLink] = useState("");
+
+  const onClickViewLink = async () => {
+    const response = await getPublicDownloadLink(fieldId);
+
+    console.log("Url: ", response.downloadUrl);
+
+    setPublicDownloadLink(response.downloadUrl);
+
+    setConfirmOpen(true);
+  };
 
   return (
     <>
       <button
-        onClick={() => setConfirmOpen(true)}
+        onClick={onClickViewLink}
         style={{
           padding: "6px 12px",
-          backgroundColor: isFilePublic? "#e7902c": "grey",
+          backgroundColor: isFilePublic ? "#e7902c" : "grey",
           color: "white",
           border: "none",
           borderRadius: "6px",
           cursor: "pointer",
-        }
-      }
+        }}
         disabled={!isFilePublic}
       >
         View
@@ -41,37 +60,37 @@ export const ViewPublicLinkButton: React.FC<ViewPublicButtonProps> = ({ s3Key, f
           fileName={fileName}
           userIdToken={userIdToken}
           onClose={() => setConfirmOpen(false)}
-          onView={onView}
+          publicDownloadLink={publicDownloadLink}
         />
       )}
     </>
   );
 };
 
-
 interface ViewPublicLinkPopUpProps {
   s3Key: string;
   fileName: string;
   userIdToken: string;
   onClose: () => void;
-  onView?: () => void;
+  publicDownloadLink: string;
 }
 
-export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({ s3Key, fileName, userIdToken, onClose, onView }) => {
+export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({
+  s3Key,
+  fileName,
+  onClose,
+  publicDownloadLink,
+}) => {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-
 
   const handleCopyButton = async () => {
     setLoading(true);
     try {
-    //   await deleteFile(s3Key, userIdToken);
-      await navigator.clipboard.writeText("Clicked Copy");
-      onView?.();
-      setCopied(true)
+      await navigator.clipboard.writeText(publicDownloadLink);
+      setCopied(true);
     } catch (err: any) {
       console.error("Copy to Clipboard failed:", err);
-      // alert(`Failed to delete file: ${err.message || err}`);
     } finally {
       setLoading(false);
     }
@@ -105,11 +124,19 @@ export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({ s3Key,
         }}
       >
         <h2 style={{ fontSize: "20px", fontWeight: 600 }}>Share link</h2>
-        <p>Share link of  <strong>{fileName}</strong> are as follow: </p>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero odio tempore minus ullam accusantium voluptate maiores perspiciatis ratione illo maxime magnam id quisquam totam aut distinctio ut quos, labore temporibus!</p>
+        <p>
+          Share link of <strong>{fileName}</strong> are as follow:{" "}
+        </p>
 
+        <div>
+          <p style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
+            {publicDownloadLink}
+          </p>
+        </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}
+        >
           <button
             onClick={onClose}
             disabled={loading}
@@ -142,4 +169,3 @@ export const ViewPublicLinkPopUp: React.FC<ViewPublicLinkPopUpProps> = ({ s3Key,
     </div>
   );
 };
-

@@ -6,14 +6,13 @@ import {
 } from "./sampleFileList";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useFileStore } from "../../store/useFileStore";
-import { getFiles } from "../../api/filesAPI"; 
+import { getFiles } from "../../api/filesAPI";
 import { FileDownloadButton } from "./FileDownloadButton";
 import { DeleteFilePopup } from "./DeleteFilePopup";
 import Buttons from "../Buttons";
 import { FileDeleteButton } from "./FileDeleteButton";
 import { PublicToggleButton } from "./PublicToggleButton";
 import { ViewPublicLinkButton } from "./ViewPublicLinkButton";
-
 
 export default function FileListTable() {
   //   const [files] = useState<FileListType[]>(sampleFileList);
@@ -69,7 +68,7 @@ export default function FileListTable() {
             fieldId: f.fieldId,
             isPublic: f.isPublic,
             shareToken: f.shareToken ?? "",
-          }))
+          })),
         );
       } catch (err) {
         console.error("Error loading file list:", err);
@@ -82,13 +81,9 @@ export default function FileListTable() {
   }, [userIdtoken, refreshKey]);
   // 🔥 This will run automatically **right after login**
 
-    const handleDeleted = (deletedKey: string) => {
-      setFiles(files.filter((f) => f.s3Key !== deletedKey));
-    };
-
-    const handleOnView = (s3Key: string) => {
-      console.log("OnClick View!")
-    }
+  const handleDeleted = (deletedKey: string) => {
+    setFiles(files.filter((f) => f.s3Key !== deletedKey));
+  };
 
   if (loading) {
     return (
@@ -125,11 +120,13 @@ export default function FileListTable() {
               </tr>
             </thead>
             <tbody>
-              {currentFileList.map((file)=> (
-                <FiletableRow 
-                handleDeleted={handleDeleted} 
-                handleOnView={handleOnView} 
-                listFileItem={file} />))}
+              {currentFileList.map((file) => (
+                <FiletableRow
+                  handleDeleted={handleDeleted}
+                  // handleOnView={handleOnView}
+                  listFileItem={file}
+                />
+              ))}
             </tbody>
           </table>
         </div>
@@ -279,24 +276,24 @@ export default function FileListTable() {
   );
 }
 
-
-
 interface FileTableRowProps {
   listFileItem: FileListType;
-  handleDeleted: (deletedKey: string) => void
-  handleOnView: (s3Key: string)=>void
+  handleDeleted: (deletedKey: string) => void;
+  // handleOnView: (s3Key: string)=>void
 }
 
-const FiletableRow: React.FC<FileTableRowProps> = ({listFileItem, handleDeleted, handleOnView}) =>{
-  const [file, setFile] = useState(listFileItem)
+const FiletableRow: React.FC<FileTableRowProps> = ({
+  listFileItem,
+  handleDeleted,
+  // handleOnView,
+}) => {
+  const [file, setFile] = useState(listFileItem);
   const [isFilePublic, setIsFilePublic] = useState(file.isPublic);
-  
 
+  // useEffect(()=>{
+  //   console.log("handle?")
 
-  useEffect(()=>{
-    console.log("handle?")
-  },[isFilePublic])
-
+  // },[isFilePublic])
 
   return (
     <tr key={file.fileId} style={styles.tableRow}>
@@ -344,21 +341,12 @@ const FiletableRow: React.FC<FileTableRowProps> = ({listFileItem, handleDeleted,
           // isPublic={false}
           isFilePublic={isFilePublic}
           setIsFilePublic={setIsFilePublic}
-          onView={() => handleOnView(file.s3Key)}
+          fieldId={file.fieldId}
         />
       </td>
     </tr>
   );
 };
-
-
-
-
-
-
-
-
-
 
 const styles: Record<string, React.CSSProperties> = {
   wrapper: {
