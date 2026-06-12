@@ -73,3 +73,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### to start app local:
 ## npm start
 
+
+###manual Update:
+-> run: npm run build
+-> Copy and replace everything in root /build folder
+-> Update AWS: CloudFront 
+    -> Distribution settings 
+    -> Create Invalidations 
+    -> (/*, /**/*)
+
+
+
