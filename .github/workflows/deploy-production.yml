@@ -35,10 +35,20 @@ jobs:
          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
          aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Print a message
-        run: echo "aws-region is  ${{ vars.AWS_REGION }}"
+    #   - name: Print a message
+    #     run: echo "aws-region is  ${{ vars.AWS_REGION }}"
 
-      - name: Print a message 2
-        run: echo "role-to-assume is ${{ vars.AWS_ROLE_ARN }}"
+    #   - name: Print a message 2
+    #     run: echo "role-to-assume is ${{ vars.AWS_ROLE_ARN }}"
 
+      - name: Deploy to S3
+        run: |
+          aws s3 sync build/ s3://${{ vars.S3_BUCKET }} --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+      
 
