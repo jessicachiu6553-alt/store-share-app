@@ -126,7 +126,7 @@ const AdminNavPane = (): JSX.Element => {
                   >
                     Admin Login
                   </div>
-                  <div style={styles.item} onClick={() => navigate("/home")}>
+                  <div style={styles.item} onClick={() => navigate("/")}>
                     Back to User Portal
                   </div>
                 </>

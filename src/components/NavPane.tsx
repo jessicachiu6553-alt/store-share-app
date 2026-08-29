@@ -56,11 +56,11 @@ const NavPane = (): JSX.Element => {
 
               <div
                 style={
-                  isActive("/") || isActive("/home")
+                  isActive("/")
                     ? styles.itemSelected
                     : styles.item
                 }
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/")}
               >
                 Home
               </div>
