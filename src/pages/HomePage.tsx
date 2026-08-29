@@ -11,6 +11,8 @@ const HomePage = () => {
         👋
       </h2>
       <p>This is your home page.</p>
+      <p>GitHub Action CICD on Production Test 1.</p>
+
     </div>
   );
 }
