@@ -28,3 +28,17 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+         role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+         aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Print a message
+        run: echo "aws-region is  ${{ vars.AWS_REGION }}"
+
+      - name: Print a message 2
+        run: echo "role-to-assume is ${{ vars.AWS_ROLE_ARN }}"
+
+
