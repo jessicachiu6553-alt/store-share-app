@@ -46,8 +46,6 @@ const App = () => {
           <div style={{ display: "flex", flex: 1, minHeight: winHeight }}>
             <Routes>
               <Route element={<NavPane />}>
-                {/* <Route path="/" element={<Navigate to="/home" />} /> */}
-                {/* <Route path="/home" element={<HomePage />} /> */}
                 <Route path="/" element={<HomePage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/login" element={<LoginPage />} />
