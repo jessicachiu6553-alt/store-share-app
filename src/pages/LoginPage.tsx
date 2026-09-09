@@ -11,7 +11,7 @@ const LoginPage = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     login(username, password)
-    navigate('/home')
+    navigate('/')
   }
 
   return (
