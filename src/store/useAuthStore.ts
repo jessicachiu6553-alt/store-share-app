@@ -69,19 +69,22 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user: User = { username: username, email: `${username}@gmail.com`, userId: `uid-  ${Math.random().toString(12)}` }
       set({ user:user, isAuthenticated: true , isAdminLoggedIn:true})
       localStorage.setItem('authUser', JSON.stringify(user))
+      localStorage.setItem('isAdminLoggedIn', 'true')
     }
   },
 
     adminLogout: () => {
       set({ user: null, isAuthenticated: false , isAdminLoggedIn:false})
       localStorage.removeItem('authUser')
+      localStorage.removeItem('isAdminLoggedIn')
     },
 
 
   initializeAuth: () => {
     const storedUser = localStorage.getItem('authUser')
+    const storedIsAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true'
     if (storedUser) {
-      set({ user: JSON.parse(storedUser), isAuthenticated: true })
+      set({ user: JSON.parse(storedUser), isAuthenticated: true, isAdminLoggedIn: storedIsAdminLoggedIn })
     }
   }
 }))

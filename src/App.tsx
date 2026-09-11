@@ -19,6 +19,8 @@ import AdminUserManagementPage from "./Admin/pages/AdminUserManagementPage";
 import AdminAnalyticsPage from "./Admin/pages/AdminAnalyticsPage";
 import AdminNotificationsPage from "./Admin/pages/AdminNotificationsPage";
 import AdminSettingsPage from "./Admin/pages/AdminSettingsPage";
+import NotFound from "./pages/NotFound";
+import AdminNotFoundPage from "./Admin/pages/AdminNotFoundPage";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -54,6 +56,7 @@ const App = () => {
                 <Route path="/starred" element={<Starred />} />
                 <Route path="/trash" element={<Trash />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="/admin" element={<AdminNavPane />}>
                 <Route path="/admin" element={<Navigate to="/admin/adminHome" />} />
@@ -63,6 +66,7 @@ const App = () => {
                 <Route path="/admin/adminNotification" element={<AdminNotificationsPage />} />
                 <Route path="/admin/adminSettings" element={<AdminSettingsPage />} />
                 <Route path="/admin/adminLogin" element={<AdminLoginPage />} />
+                <Route path="/admin/*" element={<AdminNotFoundPage />} />
               </Route>
             </Routes>
           </div>
